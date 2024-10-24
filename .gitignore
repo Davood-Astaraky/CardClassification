@@ -2,7 +2,11 @@
 __pycache__/
 *.py[cod]
 
-# Ignore data and models
+# Ignore data (too big)
+data/
+
+# Ignore notebooks
+notebooks/
 
 # Ignore logs
 logs/
