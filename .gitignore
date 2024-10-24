@@ -3,7 +3,6 @@ __pycache__/
 *.py[cod]
 
 # Ignore data (too big)
-models/
 data/
 
 # Ignore notebooks
