@@ -3,8 +3,6 @@ __pycache__/
 *.py[cod]
 
 # Ignore data and models
-data/
-models/
 
 # Ignore logs
 logs/
