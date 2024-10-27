@@ -22,4 +22,4 @@ mulla/
 .vscode/
 
 # Ignore 
-.DS_Store
+.DS_Store/
