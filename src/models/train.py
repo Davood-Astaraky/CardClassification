@@ -4,6 +4,28 @@ import torch.optim as optim
 import torchvision
 from tqdm import tqdm
 import os
+import json
+
+
+def save_metadata(metadata, path="models/saved_model/metadata.json"):
+    """Save training metadata."""
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+    metadata_path = os.path.join(project_root, path)
+    os.makedirs(os.path.dirname(metadata_path), exist_ok=True)
+    with open(metadata_path, 'w') as f:
+        json.dump(metadata, f)
+    print(f"Metadata saved to {metadata_path}")
+
+def load_metadata(path="models/saved_model/metadata.json"):
+    """Load training metadata."""
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+    metadata_path = os.path.join(project_root, path)
+    if os.path.exists(metadata_path):
+        with open(metadata_path, 'r') as f:
+            metadata = json.load(f)
+        return metadata
+    return None
+
 
 def train(model, train_loader, criterion, optimizer, device):
     """
@@ -66,9 +88,24 @@ def train_model(model, train_loader, val_loader, num_epochs, device, save_path="
     """
     Main function to handle the training loop.
     """
+    # Define training parameters metadata
+    current_metadata = {
+        "num_epochs": num_epochs,
+        "batch_size": train_loader.batch_size,
+        "learning_rate": 0.001,
+        "model_architecture": "SimpleCardClassifier",
+    }
+
+     # Check if an existing model with the same parameters already exists
+    existing_metadata = load_metadata()
+    if existing_metadata == current_metadata:
+        print("A model with the same parameters already exists. Skipping training.")
+        return None, None
+    
     # Loss function and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=current_metadata["learning_rate"])
+
 
     # Track losses
     train_losses, val_losses = [], []
@@ -92,6 +129,9 @@ def train_model(model, train_loader, val_loader, num_epochs, device, save_path="
 
         # Save the model after each epoch
         save_model(model, save_path)
+
+    # Save metadata after training completes
+    save_metadata(current_metadata)
 
     return train_losses, val_losses
 

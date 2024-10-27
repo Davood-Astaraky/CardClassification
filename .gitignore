@@ -20,3 +20,6 @@ mulla/
 
 # Ignore VS Code settings
 .vscode/
+
+# Ignore 
+.DS_Store

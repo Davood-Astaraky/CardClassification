@@ -34,8 +34,9 @@ def visualize_predictions(original_image, probabilities, class_names):
     # Display image
     axarr[0].imshow(original_image)
     axarr[0].axis("off")
+    axarr[0].set_title("Original Image")
     
-    # Display predictions
+    # Display predictions as a bar chart
     axarr[1].barh(class_names, probabilities)
     axarr[1].set_xlabel("Probability")
     axarr[1].set_title("Class Predictions")
